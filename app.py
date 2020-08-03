@@ -20,7 +20,7 @@ def connect():
 #home
 @app.route('/',methods=['GET','POST'])
 def main():
-	return render_template('index.html')
+	return render_template('home.html')
 	print("inside home")
 	# return render_template('index.html')
 	if request.method=='POST':
@@ -82,7 +82,6 @@ def login():
 		if result: 
 			tempp = str(result[0]['password'])
 			if tempp == str(pas):
-				print("password matched")
 				return redirect(url_for('index'))
 			else:
 				return redirect(url_for('login'))
@@ -95,6 +94,12 @@ def login():
 @app.route('/index',methods = ['GET','POST'])
 def index():
 	return render_template('index.html')
+
+
+@app.route('/products',methods = ['GET','POST'])
+def products():
+	return render_template('products.html')
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
