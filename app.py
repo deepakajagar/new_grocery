@@ -1,4 +1,4 @@
-from flask import Flask,redirect,url_for,render_template,request
+from flask import Flask,redirect,url_for,render_template,request,session
 import pymysql
 import pymysql.cursors
 app = Flask(__name__)
@@ -8,7 +8,7 @@ def connect():
 	print("connected")
 	connection = pymysql.connect(host='localhost',
                              user='root',
-                             password='deepanjali@2000',                             
+                             password='root123',                             
                              db='grocery',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
@@ -20,19 +20,11 @@ def connect():
 #home
 @app.route('/',methods=['GET','POST'])
 def main():
+	if 'Username' in session:
+		return render_template('index.html')
+		
 	return render_template('home.html')
-	print("inside home")
-	# return render_template('index.html')
-	if request.method=='POST':
-		if request.form['Login']:
-			return redirect(url_for('loginlink'))
-		if request.form['Sign Up']:
-			return redirect(url_for('signup'))
-		if request.form['Admin']:
-			return redirect(url_for('admin_login'))
-		else:
-			if request.method == 'GET':
-				return render_template('home.html')
+
 
 
 
@@ -77,6 +69,10 @@ def signup():
 #checking if usn matched from database else return signup page
 @app.route('/login',methods = ['GET','POST'])
 def login():
+	if 'Username' in session:
+		return redirect(url_for('index'))
+
+	session.pop('Username',None)
 	connection,cursor=connect()
 	error = None
 	if request.method=='POST':
@@ -90,6 +86,7 @@ def login():
 		if result: 
 			tempp = str(result[0]['password'])
 			if tempp == str(pas):
+				session['Username']=inp['Username']
 				return redirect(url_for('index'))
 			else:
 				error='Wrong Credentials'
@@ -106,8 +103,6 @@ def login():
 @app.route('/home',methods = ['GET','POST'])
 def home():
 	return render_template('home.html')
-
-
 
 
 @app.route('/index',methods = ['GET','POST'])
@@ -184,5 +179,11 @@ def frozen():
 def bread():
 	return render_template('bread.html')
 
+@app.route("/logout")
+def logout():
+    session.pop('Username',None)
+    return render_template("home.html")
+
 if __name__ == '__main__':
+	app.secret_key='A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 	app.run(debug=True)

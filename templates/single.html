@@ -79,8 +79,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
-								<li><a href="login.html">Login</a></li> 
-								<li><a href="login.html">Sign Up</a></li>
+								{% if 'Username' not in session %}
+								<li><a href="/login">Login</a></li> 
+								<li><a href="/signup">Sign Up</a></li>
+								{% else %}
+								<li><a href="/logout">Logout</a></li>
+
+								{% endif %}
 							</ul>
 						</div>                  
 					</div>	
