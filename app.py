@@ -22,7 +22,7 @@ def connect():
 def main():
 	if 'Username' in session:
 		return render_template('index.html')
-		
+	
 	return render_template('home.html')
 
 
@@ -178,6 +178,18 @@ def frozen():
 @app.route('/bread',methods = ['GET','POST'])
 def bread():
 	return render_template('bread.html')
+
+@app.route('/faqs',methods = ['GET','POST'])
+def faqs():
+	return render_template('faqs.html')
+
+@app.route('/privacy',methods = ['GET','POST'])
+def privacy():
+	return render_template('privacy.html')
+
+@app.route('/single',methods = ['GET','POST'])
+def single():
+	return render_template('single.html')
 
 @app.route("/logout")
 def logout():
